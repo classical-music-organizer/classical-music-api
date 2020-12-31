@@ -1,3 +1,4 @@
 const ajv = require('./ajv')
+const mongo = require('./mongodb')
 
-module.exports = { ajv }
+module.exports = { ajv, mongo }
