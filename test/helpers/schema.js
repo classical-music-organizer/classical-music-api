@@ -80,6 +80,7 @@ const ComposerSchema = {
 };
 
 module.exports = {
+  ajv,
   toObjectResponseSchema,
   toDeleteResponseSchema,
   InfoSchema,

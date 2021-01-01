@@ -74,4 +74,6 @@ describe('Composer Endpoints', () => {
   })
 
   // TODO: create/update/delete require authentication
+
+  // TODO: list composers
 })
