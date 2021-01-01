@@ -1,13 +1,17 @@
-const { Router } = require('express');
-const route = Router();
+const route = require('express-promise-router')()
 
 const ComposerService = require('../../services/composer')
+
+const { NotFoundError } = require('../middleware/errors')
 
 module.exports = (router) => {
   router.use('/composer', route);
 
   route.get('/:id', async (req, res) => {
-    const composer = await ComposerService.findById(req.params.id)
+    const id = req.params.id
+    const composer = await ComposerService.findById(id)
+
+    if (!composer) throw new NotFoundError(`Composer with id '${id}' does not exist.`)
 
     res.sendDocument(composer)
   });

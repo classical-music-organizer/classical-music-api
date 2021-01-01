@@ -1,9 +1,9 @@
 const express = require('express')
-const routes = require('../api')
+const { routes, errorHandler } = require('../api')
 
 const app = express()
 
-app.use(express.json());
+app.use(express.json())
 
 app.use((req, res, next) => {
   res.sendDocument = doc => {
@@ -16,5 +16,6 @@ app.use((req, res, next) => {
 })
 
 app.use(routes())
+app.use(errorHandler)
 
 module.exports = app
