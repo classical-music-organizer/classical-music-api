@@ -1,8 +1,13 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose
 const { InfoSchema } = require('./info')
+const { generateId } = require('./')
 
 const ComposerSchema = new Schema({
+  _id: {
+    type: String,
+    default: generateId
+  },
   name: {
       title: String,
       first: {type: String, required: true},
@@ -22,6 +27,10 @@ ComposerSchema.method('toClient', function() {
   const prune = ({id, name, info}) => ({id, name, info})
 
   obj = Object.assign(prune(obj), {object: 'composer'})
+
+  if (this.$locals.deleted) {
+    obj.deleted = true
+  }
 
   return obj;
 });
