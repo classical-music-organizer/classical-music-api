@@ -1,11 +1,8 @@
-const express = require('express')
-const app = express()
-const port = 3000
+const config = require('./config')
+const { app, mongooseUtil } = require('./loaders')
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+mongooseUtil.connect()
 
-app.listen(port, () => {
-  console.log(`Classical music API listening at http://localhost:${port}`)
-})
+module.exports = app.listen(config.port, () => { 
+  // TODO: do something after opening server
+});

@@ -1,6 +1,6 @@
 // TODO: load from env file
 
 module.exports = {
-  dbUrl: 'mongodb://localhost:27017/',
-  dbName: 'classical-music-dev'
+  dbUrl: 'mongodb://localhost:27017/classical-music-dev',
+  port: 3000
 }

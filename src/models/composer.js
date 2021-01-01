@@ -1,33 +1,31 @@
-const { ModelFactory, InfoSchema } = require('./');
+const mongoose = require('mongoose')
+const { Schema } = mongoose
+const { InfoSchema } = require('./info')
 
-const ComposerSchema = {
-  type: 'object',
-  properties: {
-    name: {
-      type: 'object',
-      properties: {
-        title: {type: 'string'},
-        first: {type: 'string'},
-        middle: {type: 'string'},
-        suffix: {type: 'string'},
-        nick: {type: 'string'}
-      },
-      required: ['first', 'last'],
-      additionalProperties: false
-    },
-    catalog: {type: 'string', expandable: true, object: 'catalog'}, // id
-    works: {
-      type: 'array',
-      items: {type: 'string'}, // ids
-      expandable: true,
-      object: 'work'
-    },
-    info: InfoSchema
+const ComposerSchema = new Schema({
+  name: {
+      title: String,
+      first: {type: String, required: true},
+      last: {type: String, required: true},
+      middle: String,
+      suffix: String,
+      nick: String
   },
-  required: ['name', 'works', 'info'],
-  additionalProperties: false
-};
+  //catalog: {type: String, expandable: true, object: 'catalog'}, // id
+  info: InfoSchema
+});
 
-const Composer = ModelFactory('composer', ComposerSchema);
+ComposerSchema.method('toClient', function() {
+  let obj = this.toObject();
+  obj.id = obj._id
+
+  const prune = ({id, name, info}) => ({id, name, info})
+
+  obj = Object.assign(prune(obj), {object: 'composer'})
+
+  return obj;
+});
+
+const Composer = mongoose.model('Composer', ComposerSchema)
 
 module.exports = {Composer, ComposerSchema};
