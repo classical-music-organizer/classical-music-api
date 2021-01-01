@@ -3,6 +3,10 @@ const config = require('../config')
 
 module.exports = {
   connect() {
-    mongoose.connect(config.dbUrl, {useNewUrlParser: true});
+    mongoose.connect(config.dbUrl, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false
+    });
   }
 }
