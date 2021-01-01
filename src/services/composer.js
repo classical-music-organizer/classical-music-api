@@ -8,6 +8,8 @@ const ComposerService = {
   },
 
   async create(obj) {
+    // TODO: protect against creating a composer with identical name of another composer
+
     const composer = new Composer(obj)
 
     return await composer.save()
@@ -21,7 +23,7 @@ const ComposerService = {
 
   async delete(id) {
     const composer = await Composer.findByIdAndDelete(id).exec()
-    composer.$locals.deleted = true
+    if (composer) composer.$locals.deleted = true // mark as deleted for client response
 
     return composer
   }

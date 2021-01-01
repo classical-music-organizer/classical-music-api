@@ -34,7 +34,7 @@ class NotFoundError extends ServerError {
 
 class BadRequestError extends ServerError {
   constructor(message, param) {
-    if (!message && param) message = `There was an unexpected property '${param}'.`
+    if (!message && param) message = `Unknown property '${param}'.`
     if (!message) message = 'Request was invalid.'
 
     super('invalid_request_error', 400, message, param)
@@ -56,6 +56,7 @@ const errorHandler = (err, req, res, next) => {
   // TODO: log error?
 
   if (!(err instanceof ServerError)) {
+    console.log('Interal Server Error: ', err) // TODO: use a logging library
     err = new InternalError() // hide real error from client
   }
 
