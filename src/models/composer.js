@@ -35,6 +35,6 @@ ComposerSchema.method('toClient', function() {
   return obj
 })
 
-const Composer = mongoose.model('Composer', ComposerSchema)
+const Composer = mongoose.model('composer', ComposerSchema)
 
 module.exports = {Composer, ComposerSchema}

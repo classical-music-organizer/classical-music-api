@@ -49,7 +49,10 @@ module.exports = (router) => {
   })
 
   route.patch('/:id', bodyValidator(PatchSchema), async (req, res) => {
-    const composer = await ComposerService.update(req.params.id, req.body)
+    const id = req.params.id
+    const composer = await ComposerService.update(id, req.body)
+
+    if (!composer) throw new NotFoundError(`Composer with id ${id} does not exist.`)
 
     res.sendDocument(composer)
   })
