@@ -17,10 +17,9 @@ const WorkSchema = new Schema({
   name: {type: String, required: true},
   movements: [MovementSchema], // TODO: validate that order property on movement is unique within work doc
   catalog: {
-    type: String,
-    ref: 'catalog'
+    name: String,
+    no: String
   },
-  catalogNo: String,
   info: InfoSchema
 })
 
@@ -34,8 +33,8 @@ WorkSchema.method('toClient', function() {
   if (obj.movements) obj.movements = this.movements.map(m => m.toClient())
   if (this.populated('composer')) obj.composer = this.composer.toClient()
 
-  const prune = ({composer, name, movements, catalog, catalogNo, info}) =>
-    ({id, object, composer, name, movements, catalog, catalogNo, info})
+  const prune = ({composer, name, movements, catalog, info}) =>
+    ({id, object, composer, name, movements, catalog, info})
   
   obj = prune(obj)
 

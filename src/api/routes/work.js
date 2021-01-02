@@ -22,8 +22,14 @@ const WorkSchema = req => {
           additionalProperties: false
         }
       },
-      catalog: {type: 'string'},
-      catalogNo: {type: 'string'},
+      catalog: {
+        type: 'object',
+        properties: {
+          name: {type: 'string'},
+          no: {type: 'string'}
+        },
+        additionalProperties: false
+      },
       info: { // TODO: redesign InfoSchema
         type: 'object',
         properties: {

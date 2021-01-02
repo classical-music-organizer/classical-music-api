@@ -23,7 +23,13 @@ const ComposerService = {
 
   async delete(id) {
     const composer = await Composer.findByIdAndDelete(id).exec()
-    if (composer) composer.$locals.deleted = true // mark as deleted for client response
+
+    if (composer) {
+      composer.$locals.deleted = true // mark as deleted for client response
+
+      // propagate deleted prop to subdocs
+      if (composer.info) composer.info.$locals.deleted = true
+    }
 
     return composer
   }

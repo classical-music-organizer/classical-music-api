@@ -16,7 +16,8 @@ const ComposerSchema = new Schema({
     suffix: String,
     nick: String
   },
-  info: InfoSchema
+  info: InfoSchema,
+  catalog: String
 })
 
 ComposerSchema.method('toClient', function() {
@@ -25,7 +26,9 @@ ComposerSchema.method('toClient', function() {
   const id = obj._id
   const object = 'composer'
 
-  const prune = ({name, info}) => ({id, object, name, info})
+  if (obj.info) obj.info = this.info.toClient()
+
+  const prune = ({name, info, catalog}) => ({id, object, name, info, catalog})
   obj = prune(obj)
 
   if (this.$locals.deleted) {

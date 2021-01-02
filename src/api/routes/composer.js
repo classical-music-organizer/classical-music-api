@@ -20,9 +20,18 @@ const ComposerSchema = req => {
         },
         required: req ? ['first', 'last'] : undefined,
         additionalProperties: false
-      }
+      },
+      info: {
+        type: 'object',
+        properties: {
+          content: {type: 'string'}
+        },
+        required: ['content'],
+        additionalProperties: false
+      },
+      catalog: {type: 'string'},
     },
-    required: req ? ['name'] : undefined,
+    required: req ? ['name', 'info'] : undefined,
     additionalProperties: false
   }
 }
