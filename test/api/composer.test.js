@@ -3,14 +3,14 @@ const request = require('supertest')(app)
 const {ajv, toObjectResponseSchema, toDeleteResponseSchema, ComposerSchema} = require('../helpers/schema')
 
 // the response schema includes more than just the Composer object, such as an 'object' prop
-const ComposerResponseSchema = toObjectResponseSchema(ComposerSchema);
+const ComposerResponseSchema = toObjectResponseSchema(ComposerSchema)
 
 // Composer response validators
 const validCompRes = ajv.compile(ComposerResponseSchema)
 const validCompDelRes = ajv.compile(toDeleteResponseSchema(ComposerResponseSchema))
 
 describe('Composer Endpoints', () => {
-  let composerId;
+  let composerId
 
   afterAll(done => {
     // Closing the server allows Jest to exit successfully.
@@ -28,18 +28,18 @@ describe('Composer Endpoints', () => {
       }
     }
 
-    const res = await request.post('/composer').send(composer);
+    const res = await request.post('/composer').send(composer)
 
     expect(res.statusCode).toEqual(200)
     expect(validCompRes(res.body)).toBeTruthy()
     expect(res.body.object).toEqual('composer')
 
     // share the composer ID with the following tests
-    composerId = res.body.id;
+    composerId = res.body.id
   })
 
   it('GET /composer/:id should return a composer', async () => {
-    const res = await request.get(`/composer/${composerId}`);
+    const res = await request.get(`/composer/${composerId}`)
 
     expect(res.statusCode).toEqual(200)
     expect(validCompRes(res.body)).toBeTruthy()
@@ -55,7 +55,7 @@ describe('Composer Endpoints', () => {
       }
     }
 
-    const res = await request.patch(`/composer/${composerId}`).send(patch);
+    const res = await request.patch(`/composer/${composerId}`).send(patch)
 
     expect(res.statusCode).toEqual(200)
     expect(validCompRes(res.body)).toBeTruthy()
@@ -64,7 +64,7 @@ describe('Composer Endpoints', () => {
   })
 
   it('DELETE /composer/:id should delete a composer', async () => {
-    const res = await request.delete(`/composer/${composerId}`);
+    const res = await request.delete(`/composer/${composerId}`)
 
     expect(res.statusCode).toEqual(200)
     expect(validCompDelRes(res.body)).toBeTruthy()

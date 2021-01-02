@@ -2,10 +2,10 @@ const ajv = require('../../loaders/ajv')
 const { BadRequestError, ValidationError } = require('./errors')
 
 const bodyValidator = (schema) => {
-  const validator = ajv.compile(schema);
+  const validator = ajv.compile(schema)
 
   return (req, res, next) => {
-    const valid = validator(req.body);
+    const valid = validator(req.body)
 
     if (valid) return next()
 

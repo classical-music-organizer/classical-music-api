@@ -9,19 +9,19 @@ const ComposerSchema = new Schema({
     default: generateId
   },
   name: {
-      title: String,
-      first: {type: String, required: true},
-      last: {type: String, required: true},
-      middle: String,
-      suffix: String,
-      nick: String
+    title: String,
+    first: {type: String, required: true},
+    last: {type: String, required: true},
+    middle: String,
+    suffix: String,
+    nick: String
   },
   //catalog: {type: String, expandable: true, object: 'catalog'}, // id
   info: InfoSchema
-});
+})
 
 ComposerSchema.method('toClient', function() {
-  let obj = this.toObject();
+  let obj = this.toObject()
   obj.id = obj._id
 
   const prune = ({id, name, info}) => ({id, name, info})
@@ -32,9 +32,9 @@ ComposerSchema.method('toClient', function() {
     obj.deleted = true
   }
 
-  return obj;
-});
+  return obj
+})
 
 const Composer = mongoose.model('Composer', ComposerSchema)
 
-module.exports = {Composer, ComposerSchema};
+module.exports = {Composer, ComposerSchema}

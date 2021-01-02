@@ -9,7 +9,7 @@ app.use((req, res, next) => {
   res.sendDocument = doc => {
     if (!doc) throw new Error('TODO: no document error')
 
-    return res.json(doc.toClient());
+    return res.json(doc.toClient())
   }
 
   next()

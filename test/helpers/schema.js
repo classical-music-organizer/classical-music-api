@@ -1,5 +1,5 @@
-const Ajv = require('ajv').default;
-const ajv = new Ajv();
+const Ajv = require('ajv').default
+const ajv = new Ajv()
 
 // appends additional required response properties not included in the object schema
 const toObjectResponseSchema = (schema) => {
@@ -77,7 +77,7 @@ const ComposerSchema = {
   },
   required: ['id', 'name', 'works', 'info'],
   additionalProperties: false
-};
+}
 
 module.exports = {
   ajv,

@@ -5,4 +5,4 @@ mongooseUtil.connect()
 
 module.exports = app.listen(config.port, () => { 
   // TODO: do something after opening server
-});
+})

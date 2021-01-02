@@ -31,7 +31,7 @@ const PostSchema = ComposerSchema(true)
 const PatchSchema = ComposerSchema(false)
 
 module.exports = (router) => {
-  router.use('/composer', route);
+  router.use('/composer', route)
 
   route.get('/:id', async (req, res) => {
     const id = req.params.id
@@ -40,7 +40,7 @@ module.exports = (router) => {
     if (!composer) throw new NotFoundError(`Composer with id '${id}' does not exist.`)
 
     res.sendDocument(composer)
-  });
+  })
 
   route.post('/', bodyValidator(PostSchema), async (req, res) => {
     const composer = await ComposerService.create(req.body)
@@ -61,5 +61,5 @@ module.exports = (router) => {
     if (!composer) throw new NotFoundError(`Composer with id '${id}' does not exist.`)
 
     res.sendDocument(composer)
-  });
-};
+  })
+}
