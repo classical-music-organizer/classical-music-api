@@ -2,7 +2,6 @@ const mongoose = require('mongoose')
 const { generateId } = require('./')
 const { Schema } = mongoose
 
-// TODO: provide structure for paragraphs/heading (markdown?)
 const InfoSchema = new Schema({
   _id: {
     type: String,
