@@ -3,6 +3,4 @@ const { app, mongooseUtil } = require('./loaders')
 
 mongooseUtil.connect()
 
-module.exports = app.listen(config.port, () => { 
-  // TODO: do something after opening server
-})
+module.exports = app.listen(config.port)

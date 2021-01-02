@@ -7,7 +7,7 @@ app.use(express.json())
 
 app.use((req, res, next) => {
   res.sendDocument = doc => {
-    if (!doc) throw new Error('TODO: no document error')
+    if (!doc) throw Error('No document given to sendDocument')
 
     return res.json(doc.toClient())
   }

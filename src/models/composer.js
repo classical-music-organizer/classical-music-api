@@ -16,17 +16,17 @@ const ComposerSchema = new Schema({
     suffix: String,
     nick: String
   },
-  //catalog: {type: String, expandable: true, object: 'catalog'}, // id
   info: InfoSchema
 })
 
 ComposerSchema.method('toClient', function() {
   let obj = this.toObject()
-  obj.id = obj._id
 
-  const prune = ({id, name, info}) => ({id, name, info})
+  const id = obj._id
+  const object = 'composer'
 
-  obj = Object.assign(prune(obj), {object: 'composer'})
+  const prune = ({name, info}) => ({id, object, name, info})
+  obj = prune(obj)
 
   if (this.$locals.deleted) {
     obj.deleted = true
