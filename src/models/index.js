@@ -110,13 +110,11 @@ const addClientFormatter = (name, schema, def, virtuals) => {
     subDocArrays.forEach(prop => {
       if (!this[prop]) return
 
-      const data = this[prop].map(doc => doc.toClient())
-
       if (this.populated(prop)) {
-        const list = new List(data, this.$locals[prop].hasMore, '/') // TODO: use real url
+        const list = new List(this[prop], this.$locals[prop].hasMore, '/') // TODO: use real url
         newObj[prop] = list.toClient()
       } else {
-        newObj[prop] = data
+        newObj[prop] = this[prop].map(doc => doc.toClient())
       }
     })
 
@@ -141,11 +139,13 @@ const List = function(data, hasMore, url) {
 }
 
 List.prototype.toClient = function() {
+  let data = this.data.map(doc => doc.toClient())
+
   return {
     object: 'list',
     hasMore: this.hasMore,
     url: this.url,
-    data: this.data
+    data
   }
 }
 
