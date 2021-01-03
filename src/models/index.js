@@ -126,6 +126,10 @@ const addClientFormatter = (name, schema, def, virtuals) => {
       newObj[prop] = this[prop].toClient()
     })
   
+    if (this.$locals.deleted) {
+      newObj.deleted = true
+    }
+
     return newObj
   })
 }

@@ -6,7 +6,7 @@ const ComposerService = {
 
   async findById(id, expand = ['works']) {
     let composer = await Composer.findById(id).exec()
-    composer = await composer.expand(expand)
+    if (composer) composer = await composer.expand(expand)
     
     return composer
   },
