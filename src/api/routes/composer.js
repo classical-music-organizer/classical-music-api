@@ -1,43 +1,8 @@
 const route = require('express-promise-router')()
+const { PostSchema, PatchSchema } = require('../schemas/composer')
 const ComposerService = require('../../services/composer')
 const { NotFoundError } = require('../middleware/errors')
 const { bodyValidator } = require('../middleware/validation')
-
-// req is a bool that turns required fields on or off; used to generate a POST or PATCH schema
-const ComposerSchema = req => {
-  return {
-    type: 'object',
-    properties: {
-      name: {
-        type: 'object',
-        properties: {
-          title: {type: 'string'},
-          first: {type: 'string'},
-          last: {type: 'string'},
-          middle: {type: 'string'},
-          suffix: {type: 'string'},
-          nick: {type: 'string'}
-        },
-        required: req ? ['first', 'last'] : undefined,
-        additionalProperties: false
-      },
-      info: {
-        type: 'object',
-        properties: {
-          content: {type: 'string'}
-        },
-        required: ['content'],
-        additionalProperties: false
-      },
-      catalog: {type: 'string'},
-    },
-    required: req ? ['name', 'info'] : undefined,
-    additionalProperties: false
-  }
-}
-
-const PostSchema = ComposerSchema(true)
-const PatchSchema = ComposerSchema(false)
 
 module.exports = (router) => {
   router.use('/composer', route)
