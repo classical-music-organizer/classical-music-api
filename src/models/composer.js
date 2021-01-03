@@ -1,13 +1,10 @@
 const mongoose = require('mongoose')
-const { Schema } = mongoose
 const { InfoSchema } = require('./info')
-const { generateId } = require('./')
+const { ExpandableSchema } = require('./')
 
-const ComposerSchema = new Schema({
-  _id: {
-    type: String,
-    default: generateId
-  },
+const MODEL_NAME = 'composer'
+
+const ComposerSchema = ExpandableSchema(MODEL_NAME, {
   name: {
     title: String,
     first: {type: String, required: true},
@@ -16,25 +13,16 @@ const ComposerSchema = new Schema({
     suffix: String,
     nick: String
   },
-  info: InfoSchema
-})
-
-ComposerSchema.method('toClient', function() {
-  let obj = this.toObject()
-
-  const id = obj._id
-  const object = 'composer'
-
-  const prune = ({name, info}) => ({id, object, name, info})
-  obj = prune(obj)
-
-  if (this.$locals.deleted) {
-    obj.deleted = true
+  info: InfoSchema,
+  catalog: String
+}, {
+  works: {
+    ref: 'work',
+    localField: '_id',
+    foreignField: 'composer',
   }
-
-  return obj
 })
 
-const Composer = mongoose.model('composer', ComposerSchema)
+const Composer = mongoose.model(MODEL_NAME, ComposerSchema)
 
 module.exports = {Composer, ComposerSchema}
