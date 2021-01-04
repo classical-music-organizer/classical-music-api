@@ -30,4 +30,13 @@ const WorkSchema = req => {
 const PostSchema = WorkSchema(true)
 const PatchSchema = WorkSchema(false)
 
-module.exports = { WorkSchema, PostSchema, PatchSchema }
+const ListSchema = {
+  type: 'object',
+  properties: {
+    composer: {type: 'string'}, // TODO: enforce ID format
+    limit: {type: 'integer'}, // TODO: positive
+    start: {type: 'integer'} // TODO: positive
+  }
+}
+
+module.exports = { WorkSchema, PostSchema, PatchSchema, ListSchema }
