@@ -36,7 +36,7 @@ const getExpandableProps = schema => {
     }
 
     if (path instanceof Schema.Types.Array) {
-      if (path.options.type[0].ref) return expandableDocs.push(path.path)
+      if (path.options.type[0].ref) return expandableArrays.push(path.path)
     }
   })
 
