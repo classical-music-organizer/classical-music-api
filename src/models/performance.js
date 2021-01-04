@@ -4,7 +4,7 @@ const { InfoSchema } = require('./info')
 
 const MODEL_NAME = 'performance'
 
-const PerformanceSchema = ExpandableSchema('performance', {
+const PerformanceSchema = ExpandableSchema(MODEL_NAME, {
   work: {
     type: String,
     required: true,
@@ -23,6 +23,6 @@ const PerformanceSchema = ExpandableSchema('performance', {
   info: InfoSchema
 })
 
-const Performance = mongoose.model(MODEL_NAME, WorkSchema)
+const Performance = mongoose.model(MODEL_NAME, PerformanceSchema)
 
 module.exports = {Performance, PerformanceSchema}
