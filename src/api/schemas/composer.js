@@ -29,4 +29,13 @@ const ComposerSchema = req => {
 const PostSchema = ComposerSchema(true)
 const PatchSchema = ComposerSchema(false)
 
-module.exports = { ComposerSchema, PostSchema, PatchSchema }
+// schema for query parameters
+const ListSchema = {
+  type: 'object',
+  properties: {
+    limit: {type: 'integer'}, // TODO: positive
+    start: {type: 'integer'} // TODO: positive
+  }
+}
+
+module.exports = { ComposerSchema, PostSchema, PatchSchema, ListSchema }

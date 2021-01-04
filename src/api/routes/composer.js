@@ -1,11 +1,19 @@
 const route = require('express-promise-router')()
-const { PostSchema, PatchSchema } = require('../schemas/composer')
+const { ListSchema, PostSchema, PatchSchema } = require('../schemas/composer')
 const ComposerService = require('../../services/composer')
 const { NotFoundError } = require('../middleware/errors')
-const { bodyValidator } = require('../middleware/validation')
+const { bodyValidator, queryValidator } = require('../middleware/validation')
 
 module.exports = (router) => {
   router.use('/composer', route)
+
+  route.get('/', queryValidator(ListSchema), async (req, res) => {
+    const {limit, start} = req.query
+
+    const components = await ComposerService.list({limit, skip: start})
+
+    res.sendDocument(components)
+  })
 
   route.get('/:id', async (req, res) => {
     const id = req.params.id
