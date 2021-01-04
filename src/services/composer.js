@@ -5,9 +5,11 @@ const ComposerService = {
   // TODO: sort populated works by some sort of relevance metric
 
   async list({limit, skip} = {}) {
-    const options = {limit: 10, skip: 0}
-    if (limit) options.limit = limit
-    if (skip) options.skip = skip
+    const defaults = {limit: 10, skip: 0}
+    if (!limit) limit = defaults.limit
+    if (!skip) skip = defaults.skip
+
+    const options = {limit, skip}
 
     let composers = await Composer.find({}, null, options).exec()
     let hasMore
