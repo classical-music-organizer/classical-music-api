@@ -1,7 +1,37 @@
+const { List } = require('../models')
 const { Work } = require('../models/work')
 
 const WorkService = {
-  // TODO: optional population
+  async list({composer, limit, skip} = {}) {
+    // TODO: validate composer ID?
+
+    const defaults = {limit: 10, skip: 0}
+    if (!limit) limit = defaults.limit
+    if (!skip) skip = defaults.skip
+
+    const options = {limit, skip}
+    const filter = composer ? {composer} : {}
+
+    let works = await Work.find(filter, null, options).exec()
+    let hasMore
+    
+    if (works.length < limit) {
+      hasMore = false
+    } else {
+      // estimatedDocumentCount can be used when no filter (no composer) is used
+      if (Object.keys(filter) == 0) {
+        const remainingCount = await Work.estimatedDocumentCount({skip}).exec()
+        hasMore = remainingCount > limit
+      } else {
+        const totalCount = await Work.countDocuments(filter).exec()
+        hasMore = totalCount - skip > limit
+      }
+    }
+
+    const list = new List(works, hasMore, '/') // TODO: use real url
+
+    return list
+  },
 
   async findById(id, expand = ['composer']) {
     let work = await Work.findById(id).exec()
