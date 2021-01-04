@@ -1,8 +1,28 @@
+const { List } = require('../models')
 const { Composer } = require('../models/composer')
 
 const ComposerService = {
-  // TODO: optional populate; adjustable works limit
   // TODO: sort populated works by some sort of relevance metric
+
+  async list({limit, skip} = {}) {
+    const options = {limit: 10, skip: 0}
+    if (limit) options.limit = limit
+    if (skip) options.skip = skip
+
+    let composers = await Composer.find({}, null, options).exec()
+    let hasMore
+    
+    if (composers.length < limit) {
+      hasMore = false
+    } else {
+      const remainingCount = await Composer.estimatedDocumentCount({skip})
+      hasMore = remainingCount > limit
+    }
+
+    const list = new List(composers, hasMore, '/') // TODO: use real url
+
+    return list
+  },
 
   async findById(id, expand = ['works']) {
     let composer = await Composer.findById(id).exec()
