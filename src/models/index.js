@@ -15,9 +15,9 @@ const ExpandableSchema = function(name, def = {}, virtuals = {}, options) {
   }, options)
 
   // add virtual props to schema
-  for (prop in virtuals) {
+  Object.keys(virtuals).forEach(prop => {
     schema.virtual(prop, virtuals[prop])
-  }
+  })
 
   addExpand(name, schema)
   addClientFormatter(name, schema, def, virtuals)
@@ -32,7 +32,11 @@ const getExpandableProps = schema => {
 
   Object.values(schema.paths).forEach(path => {
     if (path.options.ref) {
-      if (path instanceof Schema.Types.String) expandableDocs.push(path.path)
+      if (path instanceof Schema.Types.String) return expandableDocs.push(path.path)
+    }
+
+    if (path instanceof Schema.Types.Array) {
+      if (path.options.type[0].ref) return expandableDocs.push(path.path)
     }
   })
 
@@ -95,7 +99,6 @@ const addExpand = (name, schema) => {
 const addClientFormatter = (name, schema, def, virtuals) => {
   const clientProps = Object.keys(def).concat(Object.keys(virtuals)) // props to return in client response
   const {subDocs, subDocArrays} = getSubDocProps(schema)
-  const {expandableDocs, expandableArrays} = getExpandableProps(schema)
 
   schema.method('toClient', function() {
     let obj = this.toObject()
