@@ -1,5 +1,6 @@
 const { List } = require('../models')
 const { Performance } = require('../models/performance')
+const { Performer } = require('../models/performer') // TODO: temporary loader for performer
 
 const PerformanceService = {
 
@@ -14,7 +15,7 @@ const PerformanceService = {
     let performances = await Performance.find({}, null, options).exec()
     let hasMore
     
-    if (performance.length < limit) {
+    if (performances.length < limit) {
       hasMore = false
     } else {
       const remainingCount = await Performance.estimatedDocumentCount({skip})
