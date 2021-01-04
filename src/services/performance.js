@@ -1,6 +1,5 @@
 const { List } = require('../models')
 const { Performance } = require('../models/performance')
-const { Performer } = require('../models/performer') // TODO: temporary loader for performer
 
 const PerformanceService = {
 
