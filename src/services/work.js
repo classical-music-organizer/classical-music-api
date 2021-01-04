@@ -28,7 +28,7 @@ const WorkService = {
       }
     }
 
-    const list = new List(works, hasMore, '/') // TODO: use real url
+    const list = new List(works, hasMore)
 
     return list
   },

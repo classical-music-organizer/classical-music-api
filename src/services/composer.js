@@ -21,7 +21,7 @@ const ComposerService = {
       hasMore = remainingCount > limit
     }
 
-    const list = new List(composers, hasMore, '/') // TODO: use real url
+    const list = new List(composers, hasMore)
 
     return list
   },

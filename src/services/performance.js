@@ -21,7 +21,7 @@ const PerformanceService = {
       hasMore = remainingCount > limit
     }
 
-    const list = new List(performances, hasMore, '/') // TODO: use real url
+    const list = new List(performances, hasMore)
 
     return list
   },
