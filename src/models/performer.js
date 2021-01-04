@@ -13,12 +13,13 @@ const PerformerSchema = ExpandableSchema(MODEL_NAME, {
     suffix: String,
     nick: String
   },
-  performances: [{
-    type: String,
-    required: true,
-    ref: 'performance'
-  }],
   info: InfoSchema
+}, {
+  performances: {
+    ref: 'performance',
+    localField: '_id',
+    foreignField: 'performers'
+  }
 })
 
 const Performer = mongoose.model(MODEL_NAME, PerformerSchema)

@@ -18,10 +18,6 @@ const PerformerSchema = req => {
         required: ['first', 'last'],
         additionalProperties: false
       },
-      performances: {
-        type: 'array',
-        items: {type: 'string'} // id's of performances
-      },
       info: InfoSchema,
     },
     required: req ? ['name', 'info'] : undefined,
