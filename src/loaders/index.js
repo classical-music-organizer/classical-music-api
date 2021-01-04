@@ -1,5 +1,5 @@
-const ajv = require('./ajv')
+const { ajv, ajvCoerce } = require('./ajv')
 const mongooseUtil = require('./mongoose')
 const app = require('./express')
 
-module.exports = { ajv, mongooseUtil, app }
+module.exports = { ajv, ajvCoerce, mongooseUtil, app }

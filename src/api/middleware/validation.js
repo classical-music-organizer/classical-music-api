@@ -1,4 +1,4 @@
-const ajv = require('../../loaders/ajv')
+const { ajv, ajvCoerce } = require('../../loaders/ajv')
 const { BadRequestError, ValidationError } = require('./errors')
 
 const bodyValidator = schema => {
@@ -14,10 +14,10 @@ const bodyValidator = schema => {
 }
 
 const queryValidator = schema => {
-  const validator = ajv.compile(schema)
+  const validator = ajvCoerce.compile(schema) // ajvCoerce converts values to schema types if possible
 
   return (req, res, next) => {
-    const valid = validator(req.query)
+    const valid = validator(req.query) // mutates req.query with type coercions
 
     if (valid) return next()
 
@@ -27,9 +27,9 @@ const queryValidator = schema => {
 
 // Throws request error corresponding to AJV validator errors
 const throwValidationError = errors => {
-  if (!validator.errors || !validator.errors[0]) return
+  if (!errors || !errors[0]) return
 
-  const err = validator.errors[0]
+  const err = errors[0]
 
   if (err.keyword == 'additionalProperties') {
     const prop = err.params.additionalProperty
