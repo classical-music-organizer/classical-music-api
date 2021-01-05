@@ -50,6 +50,12 @@ class ValidationError extends ServerError {
   }
 }
 
+class AuthenticationError extends ServerError {
+  constructor(message = 'Authentication error.') {
+    super('authentication_error', 401, message)
+  }
+}
+
 const errorHandler = (err, req, res, next) => {
   if (!err) return next()
 
@@ -70,5 +76,6 @@ module.exports = {
   InternalError,
   NotFoundError,
   BadRequestError,
-  ValidationError
+  ValidationError,
+  AuthenticationError
 }
