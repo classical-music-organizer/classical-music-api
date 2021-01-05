@@ -1,9 +1,11 @@
 const express = require('express')
+const bearerToken = require('express-bearer-token')
 const { routes, errorHandler } = require('../api')
 
 const app = express()
 
 app.use(express.json())
+app.use(bearerToken())
 
 app.use((req, res, next) => {
   res.sendDocument = doc => {
