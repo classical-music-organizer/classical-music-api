@@ -1,9 +1,11 @@
 const express = require('express')
+const passport = require('passport')
 const { routes, errorHandler } = require('../api')
 
 const app = express()
 
 app.use(express.json())
+app.use(passport.initialize())
 
 app.use((req, res, next) => {
   res.sendDocument = doc => {
