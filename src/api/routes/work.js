@@ -3,6 +3,7 @@ const { ListSchema, PostSchema, PatchSchema } = require('../schemas/work')
 const WorkService = require('../../services/work')
 const { NotFoundError } = require('../middleware/errors')
 const { bodyValidator, queryValidator } = require('../middleware/validation')
+const { isAdmin } = require('../middleware/auth')
 
 module.exports = (router) => {
   router.use('/work', route)
@@ -24,13 +25,13 @@ module.exports = (router) => {
     res.sendDocument(work)
   })
 
-  route.post('/', bodyValidator(PostSchema), async (req, res) => {
+  route.post('/', isAdmin, bodyValidator(PostSchema), async (req, res) => {
     const work = await WorkService.create(req.body)
 
     res.sendDocument(work)
   })
 
-  route.patch('/:id', bodyValidator(PatchSchema), async (req, res) => {
+  route.patch('/:id', isAdmin, bodyValidator(PatchSchema), async (req, res) => {
     const id = req.params.id
     const work = await WorkService.update(id, req.body)
 
@@ -39,7 +40,7 @@ module.exports = (router) => {
     res.sendDocument(work)
   })
 
-  route.delete('/:id', async (req, res) => {
+  route.delete('/:id', isAdmin, async (req, res) => {
     const id = req.params.id
     const work = await WorkService.delete(id)
 
