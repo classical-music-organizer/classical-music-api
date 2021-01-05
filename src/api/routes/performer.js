@@ -3,6 +3,7 @@ const { ListSchema, PostSchema, PatchSchema } = require('../schemas/performer')
 const PerformerService = require('../../services/performer')
 const { NotFoundError } = require('../middleware/errors')
 const { bodyValidator, queryValidator } = require('../middleware/validation')
+const { isAdmin } = require('../middleware/auth')
 
 module.exports = (router) => {
   router.use('/performer', route)
@@ -24,13 +25,13 @@ module.exports = (router) => {
     res.sendDocument(performer)
   })
 
-  route.post('/', bodyValidator(PostSchema), async (req, res) => {
+  route.post('/', isAdmin, bodyValidator(PostSchema), async (req, res) => {
     const performer = await PerformerService.create(req.body)
 
     res.sendDocument(performer)
   })
 
-  route.patch('/:id', bodyValidator(PatchSchema), async (req, res) => {
+  route.patch('/:id', isAdmin, bodyValidator(PatchSchema), async (req, res) => {
     const id = req.params.id
     const performer = await PerformerService.update(id, req.body)
 
@@ -39,7 +40,7 @@ module.exports = (router) => {
     res.sendDocument(performer)
   })
 
-  route.delete('/:id', async (req, res) => {
+  route.delete('/:id', isAdmin, async (req, res) => {
     const id = req.params.id
     const performer = await PerformerService.delete(id)
 

@@ -3,6 +3,7 @@ const { ListSchema, PostSchema, PatchSchema } = require('../schemas/composer')
 const ComposerService = require('../../services/composer')
 const { NotFoundError } = require('../middleware/errors')
 const { bodyValidator, queryValidator } = require('../middleware/validation')
+const { isAdmin } = require('../middleware/auth')
 
 module.exports = (router) => {
   router.use('/composer', route)
@@ -24,13 +25,13 @@ module.exports = (router) => {
     res.sendDocument(composer)
   })
 
-  route.post('/', bodyValidator(PostSchema), async (req, res) => {
+  route.post('/', isAdmin, bodyValidator(PostSchema), async (req, res) => {
     const composer = await ComposerService.create(req.body)
 
     res.sendDocument(composer)
   })
 
-  route.patch('/:id', bodyValidator(PatchSchema), async (req, res) => {
+  route.patch('/:id', isAdmin, bodyValidator(PatchSchema), async (req, res) => {
     const id = req.params.id
     const composer = await ComposerService.update(id, req.body)
 
@@ -39,7 +40,7 @@ module.exports = (router) => {
     res.sendDocument(composer)
   })
 
-  route.delete('/:id', async (req, res) => {
+  route.delete('/:id', isAdmin, async (req, res) => {
     const id = req.params.id
     const composer = await ComposerService.delete(id)
 
