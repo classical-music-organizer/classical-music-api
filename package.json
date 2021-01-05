@@ -5,6 +5,7 @@
   "main": "src/app.js",
   "scripts": {
     "start": "nodemon src/app.js",
+    "dev": "NODE_ENV=dev nodemon -r dotenv/config src/app.js",
     "test": "jest",
     "lint": "eslint \"**src/**\""
   },
@@ -12,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "ajv": "^7.0.2",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-bearer-token": "^2.4.0",
     "express-promise-router": "^4.0.1",

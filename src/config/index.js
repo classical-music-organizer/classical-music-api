@@ -1,12 +1,10 @@
-// TODO: load from env file
-
 module.exports = {
-  dbUrl: 'mongodb://localhost:27017/classical-music-dev',
-  port: 3000,
+  dbUrl: process.env.DB_URL,
+  port: process.env.PORT,
 
-  adminUsername: 'admin', // Tricky username and password
-  adminPassword: 'password',
+  adminUsername: process.env.ADMIN_USERNAME,
+  adminPassword: process.env.ADMIN_PASSWORD,
 
-  jwtSecret: 'prokofiev',
-  jwtExpire: 4 * 60 * 60 // JWTs expire every 4 hours
+  jwtSecret: process.env.JWT_SECRET,
+  jwtExpire: process.env.JWT_EXPIRE
 }
