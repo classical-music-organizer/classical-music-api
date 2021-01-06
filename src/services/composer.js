@@ -1,5 +1,6 @@
 const { List } = require('../models')
 const { Composer } = require('../models/composer')
+const { Tag } = require('../models/tag')
 
 const ComposerService = {
   // TODO: sort populated works by some sort of relevance metric
@@ -36,6 +37,11 @@ const ComposerService = {
   async create(obj, expand = ['works']) {
     // TODO: protect against creating a composer with identical name of another composer
 
+    if (obj.tags) {
+      // TODO: check that each tag listed exists; check that there are no duplicate tags
+      obj.tags = await Tag.find({_id: {$in: obj.tags}}).exec()
+    }
+
     let composer = new Composer(obj)
     composer = await composer.save()
     composer = await composer.expand(expand)
@@ -44,6 +50,11 @@ const ComposerService = {
   },
 
   async update(id, obj, expand = ['works']) {
+    if (obj.tags) {
+      // TODO: check that each tag listed exists; check that there are no duplicate tags
+      obj.tags = await Tag.find({_id: {$in: obj.tags}}).exec()
+    }
+
     let composer = await Composer.findByIdAndUpdate(id, {$set: obj}, {new: true}).exec()
     composer = await composer.expand(expand)
 
