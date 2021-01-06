@@ -9,11 +9,11 @@ module.exports = (router) => {
   router.use('/composer', route)
 
   route.get('/', queryValidator(ListSchema), async (req, res) => {
-    const {limit, start} = req.query
+    const {search, limit, start} = req.query
 
-    const components = await ComposerService.list({limit, skip: start})
+    const composers = await ComposerService.list({search, limit, skip: start})
 
-    res.sendDocument(components)
+    res.sendDocument(composers)
   })
 
   route.get('/:id', async (req, res) => {

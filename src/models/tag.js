@@ -28,6 +28,9 @@ TagSchema.method('toClient', function() {
   return newObj
 })
 
+// fields that tag should be searched on
+TagSchema.textIndexFields = ['name']
+
 const Tag = mongoose.model(MODEL_NAME, TagSchema)
 
 module.exports = { Tag, TagSchema }

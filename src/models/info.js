@@ -27,4 +27,7 @@ InfoSchema.method('toClient', function() {
   return obj
 })
 
+// fields that info should be searched on
+InfoSchema.textIndexFields = ['content']
+
 module.exports = { InfoSchema }

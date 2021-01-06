@@ -37,6 +37,7 @@ const PatchSchema = ComposerSchema(false)
 const ListSchema = {
   type: 'object',
   properties: {
+    search: {type: 'string'},
     limit: {type: 'integer'}, // TODO: positive
     start: {type: 'integer'} // TODO: positive
   }

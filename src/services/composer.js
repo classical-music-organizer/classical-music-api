@@ -5,20 +5,29 @@ const { Tag } = require('../models/tag')
 const ComposerService = {
   // TODO: sort populated works by some sort of relevance metric
 
-  async list({limit, skip} = {}) {
+  async list({limit, skip, search} = {}) {
     const defaults = {limit: 10, skip: 0}
     if (!limit) limit = defaults.limit
     if (!skip) skip = defaults.skip
 
     const options = {limit, skip}
+    let composers
 
-    let composers = await Composer.find({}, null, options).exec()
+    if (!search || search == '') {
+      composers = await Composer.find({}, null, options).exec()
+    } else {
+      composers = await Composer.find(
+        {$text: {$search: search}},
+        {score: {$meta: 'textScore'}}, options
+      ).sort({score: {$meta: 'textScore'}}).exec()
+    }
+    
     let hasMore
     
     if (composers.length < limit) {
       hasMore = false
     } else {
-      const remainingCount = await Composer.estimatedDocumentCount({skip})
+      const remainingCount = await Composer.estimatedDocumentCount({skip}) // TODO: counting broken for searches
       hasMore = remainingCount > limit
     }
 
