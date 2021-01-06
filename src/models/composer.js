@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const { InfoSchema } = require('./info')
+const { TagSchema } = require('./tag')
 const { ExpandableSchema } = require('./')
 
 const MODEL_NAME = 'composer'
@@ -14,7 +15,8 @@ const ComposerSchema = ExpandableSchema(MODEL_NAME, {
     nick: String
   },
   info: InfoSchema,
-  catalog: String
+  catalog: String,
+  tags: [TagSchema]
 }, {
   works: {
     ref: 'work',

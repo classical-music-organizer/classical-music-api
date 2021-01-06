@@ -20,6 +20,10 @@ const ComposerSchema = req => {
       },
       info: InfoSchema,
       catalog: {type: 'string'},
+      tags: {
+        type: 'array',
+        items: {type: 'string'} // ids of tags
+      }
     },
     required: req ? ['name', 'info'] : undefined,
     additionalProperties: false
