@@ -19,7 +19,8 @@
     "express-promise-router": "^4.0.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.9",
-    "nanoid": "^3.1.20"
+    "nanoid": "^3.1.20",
+    "slugify": "^1.4.6"
   },
   "devDependencies": {
     "eslint": "^7.16.0",
