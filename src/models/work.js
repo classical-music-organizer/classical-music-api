@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const { ExpandableSchema } = require('./')
 const { InfoSchema } = require('./info')
 const { MovementSchema } = require('./movement')
+const { TagSchema } = require('./tag')
 
 const MODEL_NAME = 'work'
 
@@ -17,7 +18,8 @@ const WorkSchema = ExpandableSchema('work', {
     name: String,
     no: String
   },
-  info: InfoSchema
+  info: InfoSchema,
+  tags: [TagSchema]
 })
 
 const Work = mongoose.model(MODEL_NAME, WorkSchema)

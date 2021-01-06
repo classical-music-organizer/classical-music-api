@@ -1,5 +1,6 @@
 const { List } = require('../models')
 const { Work } = require('../models/work')
+const { Tag } = require('../models/tag')
 
 const WorkService = {
   async list({composer, limit, skip} = {}) {
@@ -43,6 +44,11 @@ const WorkService = {
   async create(obj, expand = ['composer']) {
     // TODO: protect against creating a work with identical name of another work
 
+    if (obj.tags) {
+      // TODO: check that each tag listed exists; check that there are no duplicate tags
+      obj.tags = await Tag.find({_id: {$in: obj.tags}}).exec()
+    }
+
     let work = new Work(obj)
     work = await work.save()
     work = await work.expand(expand)
@@ -51,6 +57,11 @@ const WorkService = {
   },
 
   async update(id, obj, expand = ['composer']) {
+    if (obj.tags) {
+      // TODO: check that each tag listed exists; check that there are no duplicate tags
+      obj.tags = await Tag.find({_id: {$in: obj.tags}}).exec()
+    }
+
     let work = await Work.findByIdAndUpdate(id, {$set: obj}, {new: true}).exec()
     if (work) work = await work.expand(expand)
 

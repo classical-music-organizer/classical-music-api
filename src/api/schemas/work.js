@@ -20,7 +20,11 @@ const WorkSchema = req => {
         },
         additionalProperties: false
       },
-      info: InfoSchema
+      info: InfoSchema,
+      tags: {
+        type: 'array',
+        items: {type: 'string'} // id's of tags
+      }
     },
     required: req ? ['name', 'composer', 'info'] : undefined,
     additionalProperties: false
