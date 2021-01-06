@@ -6,5 +6,5 @@ module.exports = {
   adminPassword: process.env.ADMIN_PASSWORD,
 
   jwtSecret: process.env.JWT_SECRET,
-  jwtExpire: process.env.JWT_EXPIRE
+  jwtExpire: parseInt(process.env.JWT_EXPIRE)
 }
