@@ -9,9 +9,9 @@ module.exports = (router) => {
   router.use('/performer', route)
 
   route.get('/', queryValidator(ListSchema), async (req, res) => {
-    const {limit, start} = req.query
+    const {limit, start, search} = req.query
 
-    const components = await PerformerService.list({limit, skip: start})
+    const components = await PerformerService.list({limit, skip: start, search})
 
     res.sendDocument(components)
   })
