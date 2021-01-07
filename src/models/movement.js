@@ -11,7 +11,6 @@ const MovementSchema = new Schema({
   order: {
     type: Number,
     required: true,
-    unique: true,
     validate: {
       validator: Number.isInteger,
       message: '{VALUE} is not an integer value'
@@ -35,5 +34,8 @@ MovementSchema.method('toClient', function() {
 
   return obj
 })
+
+// fields that movement should be searched on
+MovementSchema.textIndexFields = ['name']
 
 module.exports = { MovementSchema }

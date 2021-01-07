@@ -9,9 +9,9 @@ module.exports = (router) => {
   router.use('/work', route)
 
   route.get('/', queryValidator(ListSchema), async (req, res) => {
-    const {composer, limit, start} = req.query
+    const {composer, limit, start, search} = req.query
 
-    const works = await WorkService.list({composer, limit, skip: start})
+    const works = await WorkService.list({composer, limit, skip: start, search})
 
     res.sendDocument(works)
   })
