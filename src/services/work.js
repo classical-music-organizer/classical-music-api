@@ -3,7 +3,7 @@ const { Work } = require('../models/work')
 const { Tag } = require('../models/tag')
 
 const WorkService = {
-  async list({composer, limit, skip} = {}) {
+  async list({composer, limit, skip, search} = {}) {
     // TODO: validate composer ID?
 
     const defaults = {limit: 10, skip: 0}
@@ -11,15 +11,30 @@ const WorkService = {
     if (!skip) skip = defaults.skip
 
     const options = {limit, skip}
-    const filter = composer ? {composer} : {}
+    const filter = {}
+    const proj = {}
 
-    let works = await Work.find(filter, null, options).exec()
+    if (composer) filter.composer = composer
+
+    if (search && search != '') {
+      filter.$text = {$search: search}
+      proj.score = {$meta: 'textScore'}
+    }
+
+    let works
+
+    if (search && search != '') {
+      works = await Work.find(filter, proj, options).sort({score: {$meta: 'textScore'}}).exec()
+    } else {
+      works = await Work.find(filter, proj, options).exec()
+    }
+    
     let hasMore
     
     if (works.length < limit) {
       hasMore = false
     } else {
-      // estimatedDocumentCount can be used when no filter (no composer) is used
+      // estimatedDocumentCount can be used when no filter (no composer or search) is used
       if (Object.keys(filter) == 0) {
         const remainingCount = await Work.estimatedDocumentCount({skip}).exec()
         hasMore = remainingCount > limit
