@@ -19,7 +19,15 @@ const PerformerSchema = ExpandableSchema(MODEL_NAME, {
     ref: 'performance',
     localField: '_id',
     foreignField: 'performers'
-  }
+  },
+  fullName: {}
+})
+
+// combines all names contained in name object
+PerformerSchema.virtual('fullName').get(function() {
+  const {title, first, middle, last, suffix} = this.name
+
+  return [title, first, middle, last, suffix].filter(str => !!str).join(' ')
 })
 
 // fields to search composer on

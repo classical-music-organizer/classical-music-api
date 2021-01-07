@@ -22,7 +22,15 @@ const ComposerSchema = ExpandableSchema(MODEL_NAME, {
     ref: 'work',
     localField: '_id',
     foreignField: 'composer',
-  }
+  },
+  fullName: {} // we mark the virtual here so it gets added to the client response
+})
+
+// combines all names contained in name object
+ComposerSchema.virtual('fullName').get(function() {
+  const {title, first, middle, last, suffix} = this.name
+
+  return [title, first, middle, last, suffix].filter(str => !!str).join(' ')
 })
 
 // fields to search composer on
