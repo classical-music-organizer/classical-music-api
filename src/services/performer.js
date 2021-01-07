@@ -4,20 +4,27 @@ const { Performer } = require('../models/performer')
 const PerformerService = {
 
   // TODO: filter by performance
-  async list({limit, skip} = {}) {
+  async list({limit, skip, search} = {}) {
     const defaults = {limit: 10, skip: 0}
     if (!limit) limit = defaults.limit
     if (!skip) skip = defaults.skip
 
+    const filter = {}
+    const proj = {}
     const options = {limit, skip}
 
-    let performers = await Performer.find({}, null, options).exec()
+    if (search && search != '') {
+      filter.$text = {$search: search}
+      proj.score = {$meta: 'textScore'}
+    }
+
+    let performers = await Performer.find(filter, proj, options).exec()
     let hasMore
     
     if (performers.length < limit) {
       hasMore = false
     } else {
-      const remainingCount = await Performer.estimatedDocumentCount({skip})
+      const remainingCount = await Performer.estimatedDocumentCount({skip}) // TODO: count broken for searching
       hasMore = remainingCount > limit
     }
 
