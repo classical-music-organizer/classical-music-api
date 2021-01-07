@@ -107,7 +107,11 @@ const addClientFormatter = (name, schema, def, virtuals) => {
     const object = name
 
     const newObj = clientProps.reduce((newObj, prop) => {
-      return Object.assign(newObj, {[prop]: obj[prop]})
+      if (virtuals[prop]) {
+        return Object.assign(newObj, {[prop]: this.get(prop)})
+      } else {
+        return Object.assign(newObj, {[prop]: obj[prop]})
+      }
     }, {id, object})
 
     subDocArrays.forEach(prop => {
