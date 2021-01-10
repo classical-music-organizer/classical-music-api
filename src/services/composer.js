@@ -1,3 +1,4 @@
+const slugify = require('slugify')
 const { List } = require('../models')
 const { Composer } = require('../models/composer')
 const { Tag } = require('../models/tag')
@@ -52,6 +53,8 @@ const ComposerService = {
     }
 
     let composer = new Composer(obj)
+    composer.slug = slugify(composer.fullName)
+
     composer = await composer.save()
     composer = await composer.expand(expand)
 
@@ -65,6 +68,7 @@ const ComposerService = {
     }
 
     let composer = await Composer.findByIdAndUpdate(id, {$set: obj}, {new: true}).exec()
+    composer.slug = slugify(composer.fullName)
     composer = await composer.expand(expand)
 
     return composer
