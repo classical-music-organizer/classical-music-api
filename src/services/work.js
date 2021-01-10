@@ -1,3 +1,4 @@
+const slugify = require('slugify')
 const { List } = require('../models')
 const { Work } = require('../models/work')
 const { Tag } = require('../models/tag')
@@ -65,6 +66,7 @@ const WorkService = {
     }
 
     let work = new Work(obj)
+    work.slug = slugify(work.name)
     work = await work.save()
     work = await work.expand(expand)
 
@@ -78,7 +80,10 @@ const WorkService = {
     }
 
     let work = await Work.findByIdAndUpdate(id, {$set: obj}, {new: true}).exec()
-    if (work) work = await work.expand(expand)
+    if (work) {
+      work.slug = slugify(work.name)
+      work = await work.expand(expand)
+    }
 
     return work
   },

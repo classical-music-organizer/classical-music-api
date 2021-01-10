@@ -13,7 +13,8 @@ const PerformerSchema = ExpandableSchema(MODEL_NAME, {
     suffix: String,
     nick: String
   },
-  info: InfoSchema
+  info: InfoSchema,
+  slug: String
 }, {
   performances: {
     ref: 'performance',

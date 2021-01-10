@@ -1,3 +1,4 @@
+const slugify = require('slugify')
 const { List } = require('../models')
 const { Performer } = require('../models/performer')
 
@@ -44,6 +45,7 @@ const PerformerService = {
     // TODO: protect against creating a performer with identical name of another performer
 
     let performer = new Performer(obj)
+    performer.slug = slugify(performer.fullName)
     performer = await performer.save()
     performer = await performer.expand(expand)
 
@@ -52,6 +54,7 @@ const PerformerService = {
 
   async update(id, obj, expand = ['performances']) {
     let performer = await Performer.findByIdAndUpdate(id, {$set: obj}, {new: true}).exec()
+    performer.slug = slugify(performer.fullName)
     performer = await performer.expand(expand)
 
     return performer

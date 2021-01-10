@@ -16,7 +16,8 @@ const ComposerSchema = ExpandableSchema(MODEL_NAME, {
   },
   info: InfoSchema,
   catalog: String,
-  tags: [TagSchema]
+  tags: [TagSchema],
+  slug: String
 }, {
   works: {
     ref: 'work',
