@@ -19,7 +19,8 @@ const WorkSchema = ExpandableSchema('work', {
     no: String
   },
   info: InfoSchema,
-  tags: [TagSchema]
+  tags: [TagSchema],
+  slug: String
 })
 
 // fields to search composer on
