@@ -23,6 +23,9 @@ TagSchema.method('toClient', function() {
 
   const newObj = prune(obj)
 
+  // `composers` is sometimes populated by ComposerService
+  if (this.composers) newObj.composers = this.composers.toClient()
+
   if (this.$locals.deleted) newObj.deleted = true
 
   return newObj

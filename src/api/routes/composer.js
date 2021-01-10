@@ -1,5 +1,5 @@
 const route = require('express-promise-router')()
-const { ListSchema, PostSchema, PatchSchema } = require('../schemas/composer')
+const { ListSchema, RetrieveSchema, PostSchema, PatchSchema } = require('../schemas/composer')
 const ComposerService = require('../../services/composer')
 const { NotFoundError } = require('../middleware/errors')
 const { bodyValidator, queryValidator } = require('../middleware/validation')
@@ -16,9 +16,11 @@ module.exports = (router) => {
     res.sendDocument(composers)
   })
 
-  route.get('/:id', async (req, res) => {
+  route.get('/:id', queryValidator(RetrieveSchema), async (req, res) => {
+    const { populateTags } = req.query
+
     const id = req.params.id
-    const composer = await ComposerService.findById(id)
+    const composer = await ComposerService.findById(id, { populateTagComposers: populateTags })
 
     if (!composer) throw new NotFoundError(`Composer with id '${id}' does not exist.`)
 

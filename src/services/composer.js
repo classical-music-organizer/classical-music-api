@@ -37,9 +37,15 @@ const ComposerService = {
     return list
   },
 
-  async findById(id, expand = ['works']) {
+  async findById(id, {expand, populateTagComposers}) {
+    if (!expand) expand = ['works']
+
     let composer = await Composer.findById(id).exec()
     if (composer) composer = await composer.expand(expand)
+
+    if (populateTagComposers) {
+      composer.tags = await this.populateTagComposers(composer.tags)
+    }
     
     return composer
   },
@@ -88,6 +94,27 @@ const ComposerService = {
     }
 
     return composer
+  },
+
+  async populateTagComposers(tags) {
+    if (!tags || tags.length == 0) return []
+
+    const tagIds = tags.map(t => t._id)
+
+    // TODO: limit query, sort query?
+    // TODO: when ComposerService.list can filter by tags, make a call to it instead
+    const composers = await Composer.find({'tags._id': {$in: tagIds}}).exec()
+
+    return tags.map(tag => {
+      const tagComps = composers.filter(c => {
+        return !!c.tags.find(t => t._id == tag._id)
+      })
+      
+      // TODO: actually check if hasMore
+      tag.composers = new List(tagComps, false)
+
+      return tag
+    })
   }
 }
 
