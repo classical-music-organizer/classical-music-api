@@ -43,4 +43,11 @@ const ListSchema = {
   }
 }
 
-module.exports = { WorkSchema, PostSchema, PatchSchema, ListSchema }
+const RetrieveSchema = {
+  type: 'object',
+  properties: {
+    populateTags: {type: 'boolean'}
+  }
+}
+
+module.exports = { WorkSchema, PostSchema, PatchSchema, ListSchema, RetrieveSchema }

@@ -1,5 +1,5 @@
 const route = require('express-promise-router')()
-const { ListSchema, PostSchema, PatchSchema } = require('../schemas/work')
+const { ListSchema, RetrieveSchema, PostSchema, PatchSchema } = require('../schemas/work')
 const WorkService = require('../../services/work')
 const { NotFoundError } = require('../middleware/errors')
 const { bodyValidator, queryValidator } = require('../middleware/validation')
@@ -16,9 +16,11 @@ module.exports = (router) => {
     res.sendDocument(works)
   })
 
-  route.get('/:id', async (req, res) => {
+  route.get('/:id', queryValidator(RetrieveSchema), async (req, res) => {
+    const { populateTags } = req.query
+
     const id = req.params.id
-    const work = await WorkService.findById(id)
+    const work = await WorkService.findById(id, {populateTagWorks: populateTags})
 
     if (!work) throw new NotFoundError(`Work with id '${id}' does not exist.`)
 
