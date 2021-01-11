@@ -23,8 +23,9 @@ TagSchema.method('toClient', function() {
 
   const newObj = prune(obj)
 
-  // `composers` is sometimes populated by ComposerService
+  // `composers` and `works` are sometimes populated by ComposerService and WorkService
   if (this.composers) newObj.composers = this.composers.toClient()
+  if (this.works) newObj.works = this.works.toClient()
 
   if (this.$locals.deleted) newObj.deleted = true
 
