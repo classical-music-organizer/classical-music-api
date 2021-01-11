@@ -50,9 +50,15 @@ const WorkService = {
     return list
   },
 
-  async findById(id, expand = ['composer']) {
+  async findById(id, {expand, populateTagWorks} = {}) {
+    if (!expand) expand = ['composer']
+
     let work = await Work.findById(id).exec()
     if (work) work = await work.expand(expand)
+
+    if (populateTagWorks) {
+      work.tags = await this.populateTagWorks(work.tags)
+    }
     
     return work
   },
@@ -101,6 +107,27 @@ const WorkService = {
     }
 
     return work
+  },
+
+  async populateTagWorks(tags) {
+    if (!tags || tags.length == 0) return []
+
+    const tagIds = tags.map(t => t._id)
+
+    // TODO: limit query, sort query?
+    // TODO: when WorkService.list can filter by tags, make a call to it instead
+    const works = await Work.find({'tags._id': {$in: tagIds}}).exec()
+
+    return tags.map(tag => {
+      const tagWorks = works.filter(w => {
+        return !!w.tags.find(t => t._id == tag._id)
+      })
+      
+      // TODO: actually check if hasMore
+      tag.works = new List(tagWorks, false)
+
+      return tag
+    })
   }
 }
 
